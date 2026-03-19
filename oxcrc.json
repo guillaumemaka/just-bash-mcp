@@ -1,0 +1,6 @@
+{
+  "rules": {
+    "all": true
+  },
+  "typescript": true
+}
