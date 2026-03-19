@@ -16,6 +16,19 @@ A secure, isolated filesystem and bash MCP (Model Context Protocol) server power
 bun install
 ```
 
+## Observability with Laminar
+
+This project supports [Laminar](https://laminar.sh) for tracing and observability. To enable Laminar tracing:
+
+1. Get your API key from [Laminar](https://laminar.sh)
+2. Set the `LMNR_PROJECT_API_KEY` environment variable:
+
+```bash
+export LMNR_PROJECT_API_KEY=your-api-key
+```
+
+Laminar will automatically capture traces when the MCP server processes tool calls.
+
 ## Usage
 
 ### Development Mode

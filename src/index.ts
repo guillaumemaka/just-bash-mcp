@@ -5,6 +5,11 @@ import {
   ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
 import { Bash } from "just-bash";
+import { Laminar } from "@lmnr-ai/lmnr";
+
+Laminar.initialize({
+  projectApiKey: process.env.LMNR_PROJECT_API_KEY,
+});
 
 const bash = new Bash({
   executionLimits: {
