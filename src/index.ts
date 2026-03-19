@@ -4,7 +4,13 @@ import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
-import { executeBash } from "just-bash";
+import { Bash } from "just-bash";
+
+const bash = new Bash({
+  executionLimits: {
+    maxCommandCount: 10000,
+  },
+});
 
 const server = new Server(
   {
@@ -31,11 +37,6 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
               type: "string",
               description: "The bash command to execute",
             },
-            timeout: {
-              type: "number",
-              description: "Timeout in milliseconds (default: 30000)",
-              default: 30000,
-            },
           },
           required: ["command"],
         },
@@ -48,10 +49,22 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
   const { name, arguments: args } = request.params;
 
   if (name === "execute_bash") {
+    const command = args?.command as string;
+
+    if (!command) {
+      return {
+        content: [
+          {
+            type: "text",
+            text: "Error: command is required",
+          },
+        ],
+        isError: true,
+      };
+    }
+
     try {
-      const result = await executeBash(args.command, {
-        timeout: args.timeout || 30000,
-      });
+      const result = await bash.exec(command);
       return {
         content: [
           {

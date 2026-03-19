@@ -13,6 +13,7 @@
     "dev": "bun run src/client.ts",
     "build": "bun build src/index.ts --outdir dist --target node",
     "lint": "oxlint src/",
+    "typecheck": "tsc --noEmit",
     "package": "npm pack",
     "vscode:mcp:install": "npx @modelcontextprotocol/inspector install"
   },
