@@ -1,0 +1,40 @@
+{
+  "name": "just-bash-mcp",
+  "version": "1.0.0",
+  "description": "Isolated Filesystem and bash MCP server using just-bash",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "just-bash-mcp": "./dist/index.js"
+  },
+  "scripts": {
+    "test": "bun test",
+    "dev": "bun run src/client.ts",
+    "build": "bun build src/index.ts --outdir dist --target node",
+    "package": "npm pack",
+    "vscode:mcp:install": "npx @modelcontextprotocol/inspector install"
+  },
+  "dependencies": {
+    "just-bash": "^0.5.0",
+    "@modelcontextprotocol/sdk": "^1.0.0"
+  },
+  "devDependencies": {
+    "@modelcontextprotocol/explorer": "^1.0.0",
+    "@types/bun": "^1.0.0",
+    "typescript": "^5.3.0"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "just-bash",
+    "bash",
+    "filesystem",
+    "sandbox"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/guillaumemaka/just-bash-mcp.git"
+  }
+}
