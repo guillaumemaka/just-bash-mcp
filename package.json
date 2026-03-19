@@ -20,7 +20,8 @@
   "dependencies": {
     "@lmnr-ai/lmnr": "^0.8.15",
     "@modelcontextprotocol/sdk": "^1.0.0",
-    "just-bash": "^2.13.0"
+    "just-bash": "^2.13.0",
+
   },
   "devDependencies": {
     "@types/bun": "^1.0.0",

@@ -1,3 +1,4 @@
+import { Laminar } from "@lmnr-ai/lmnr";
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import {
@@ -5,11 +6,14 @@ import {
   ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
 import { Bash } from "just-bash";
-import { Laminar } from "@lmnr-ai/lmnr";
+import { existsSync, statSync } from "node:fs";
+import path from "node:path";
 
 Laminar.initialize({
   projectApiKey: process.env.LMNR_PROJECT_API_KEY,
 });
+
+const AUTO_APPROVE_DIR: string[] = [];
 
 const bash = new Bash({
   executionLimits: {
@@ -94,7 +98,33 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
   throw new Error(`Unknown tool: ${name}`);
 });
 
+function setAutoApproveDirs(dirs: string[]) {
+  if (dirs.length === 0) return;
+
+  for (const dir of dirs) {
+    if (!path.isAbsolute(dir)) {
+      console.error(`Directory ${dir} is not an absolute path`);
+      process.exit(1);
+    }
+
+    if (!existsSync(dir)) {
+      console.error(`Directory ${dir} does not exist`);
+      process.exit(1);
+    }
+    const dirStat = statSync(dir);
+    if (!dirStat.isDirectory()) {
+      dirs[dirs.indexOf(dir)] = path.dirname(dir);
+    }
+  }
+
+  AUTO_APPROVE_DIR.push(...dirs);
+  console.error("Auto-approve directories:", AUTO_APPROVE_DIR);
+}
+
 async function main() {
+  if (process.argv.length > 2) {
+    setAutoApproveDirs(process.argv.slice(2));
+  }
   const transport = new StdioServerTransport();
   await server.connect(transport);
   console.error("just-bash-mcp server running on stdio");
